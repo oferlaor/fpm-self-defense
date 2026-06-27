@@ -1,9 +1,9 @@
 ---
-name: fpm-monitor
-description: Manage and troubleshoot the fpm-monitor server health monitoring script. Use when asked about alerts, thresholds, Cloudflare Under Attack Mode, log files, cron setup, or any changes to fpm-monitor configuration.
+name: fpm-self-defense
+description: Manage and troubleshoot the fpm-self-defense server health monitoring script. Use when asked about alerts, thresholds, Cloudflare Under Attack Mode, log files, cron setup, or any changes to fpm-self-defense configuration.
 ---
 
-# fpm-monitor
+# fpm-self-defense
 
 Server health monitor. Runs every 3 minutes via cron.
 
@@ -53,7 +53,7 @@ Then call the CF API directly, or wait for the script to auto-disable it once lo
 ## Cron entry
 
 ```
-*/3 * * * * /path/to/fpm-monitor/fpm-monitor.sh >/dev/null 2>&1
+*/3 * * * * /path/to/fpm-self-defense/fpm-monitor.sh >/dev/null 2>&1
 ```
 
 ## Current thresholds (from .env)

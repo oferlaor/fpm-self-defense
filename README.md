@@ -1,4 +1,4 @@
-# fpm-monitor
+# fpm-self-defense
 
 Lightweight server health monitor for Linux/Apache/PHP-FPM stacks. Runs every 3 minutes via cron, logs key metrics, sends email alerts on threshold breaches, and automatically enables/disables Cloudflare Under Attack Mode during load spikes.
 
@@ -13,7 +13,7 @@ Lightweight server health monitor for Linux/Apache/PHP-FPM stacks. Runs every 3 
 ## Files
 
 ```
-fpm-monitor/
+fpm-self-defense/
 ├── fpm-monitor.sh      # main script
 ├── .env                # site config & secrets (not committed)
 ├── .env.example        # template — copy this to .env
@@ -38,8 +38,8 @@ Log files (written to `LOG_DIR` from `.env`):
 **1. Clone and configure**
 
 ```bash
-git clone https://github.com/youruser/fpm-monitor.git /opt/fpm-monitor
-cd /opt/fpm-monitor
+git clone https://github.com/oferlaor/fpm-self-defense.git /opt/fpm-self-defense
+cd /opt/fpm-self-defense
 cp .env.example .env
 # edit .env — fill in credentials and tune thresholds for your server
 ```
@@ -47,14 +47,14 @@ cp .env.example .env
 **2. Create the log directory**
 
 ```bash
-mkdir -p /var/log/fpm-monitor
-# set LOG_DIR=/var/log/fpm-monitor in .env
+mkdir -p /var/log/fpm-self-defense
+# set LOG_DIR=/var/log/fpm-self-defense in .env
 ```
 
 **3. Add to crontab**
 
 ```
-*/3 * * * * /opt/fpm-monitor/fpm-monitor.sh >/dev/null 2>&1
+*/3 * * * * /opt/fpm-self-defense/fpm-monitor.sh >/dev/null 2>&1
 ```
 
 ## Configuration
