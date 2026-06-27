@@ -2,6 +2,24 @@
 
 Lightweight server health monitor for Linux/Apache/PHP-FPM stacks. Runs every 3 minutes via cron, logs key metrics, sends email alerts on threshold breaches, and automatically enables/disables Cloudflare Under Attack Mode during load spikes.
 
+## The problem
+
+A DDoS or traffic spike hits your server. PHP-FPM has a fixed pool of worker processes (`pm.max_children`). Once every worker is busy, new requests queue up — and if the queue fills, the server starts refusing connections entirely. Memory climbs, load average spikes, swap kicks in, and the server becomes unresponsive or crashes. By the time you notice, the damage is done.
+
+Traditional monitoring tools tell you *after* the fact. What you need is something that detects the attack early, fights back automatically, and wakes you up with enough context to understand what happened.
+
+## How fpm-self-defense works
+
+**Detection** — Every 3 minutes, the script samples PHP-FPM worker count, total FPM memory, system RAM, swap, load average, TCP connections, Apache workers, and MySQL threads. Thresholds are configurable per-server.
+
+**Early warning** — FPM workers near capacity (default: 90% of `max_children`) for 3 consecutive rounds (~9 minutes) triggers an alert before the pool is exhausted. At 100% capacity it fires immediately.
+
+**Active defense** — When load exceeds the high threshold, the script calls the Cloudflare API to enable [Under Attack Mode](https://developers.cloudflare.com/fundamentals/reference/under-attack-mode/), which challenges every visitor with a browser integrity check. This sheds most bot/attack traffic at the CDN edge before it ever reaches PHP-FPM, giving the server room to breathe.
+
+**Situational awareness** — Alert emails include the top attacking IPs, URLs, user agents, and ASNs from Cloudflare Analytics over the last 5 minutes, so you can assess the attack without logging into anything.
+
+**Auto-recovery** — Once load stays below the recovery threshold for 10+ consecutive minutes, Under Attack Mode is automatically disabled and a follow-up email confirms how long it was active.
+
 ## Features
 
 - Tracks PHP-FPM workers, memory, system RAM, swap, load average, TCP connections, Apache, MySQL, and Sphinx
